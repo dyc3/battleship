@@ -83,13 +83,13 @@ class Main(object):
 						print("cant get content at: {}".format(grid_pos))
 						# print(self.grid_player2)
 					circle_color = None
-					if grid_space_content:
+					if self.current_mouse_over_grid and self.current_mouse_over_grid == grid_pos:
+						circle_color = "green"
+					elif grid_space_content:
 						if grid_space_content == "hit":
 							circle_color = "red"
 						elif grid_space_content == "miss":
 							circle_color = "white"
-					elif self.current_mouse_over_grid and self.current_mouse_over_grid == grid_pos:
-						circle_color = "green"
 					if circle_color:
 						grid_center = self.getGridSpaceCenter(*grid_pos)
 						radius = int(min(self.grid_block_width, self.grid_block_height) / 4)
