@@ -99,8 +99,9 @@ class Main(object):
 
 
 	def onMouseMove(self, event):
-		self.current_mouse_over_grid = self.getGridPos(event.x, event.y)
-		print(self.current_mouse_over_grid)
+		if self.current_mouse_over_grid != self.getGridPos(event.x, event.y):
+			self.current_mouse_over_grid = self.getGridPos(event.x, event.y)
+			print(self.current_mouse_over_grid)
 		self.draw()
 
 	def getGridPos(self, canvas_x, canvas_y):
