@@ -48,6 +48,7 @@ class Main(object):
 			for c in range(GRID_SIZE):
 				self.grid_player1[r] += [None]
 				self.grid_player2[r] += [None]
+
 		print("Game reset")
 
 	def draw(self):
@@ -80,7 +81,7 @@ class Main(object):
 						circle_color = "green"
 					if circle_color:
 						grid_center = self.getGridSpaceCenter(*grid_pos)
-						radius = int(min(self.grid_block_width, self.grid_block_height) / 2 - 3)
+						radius = int(min(self.grid_block_width, self.grid_block_height) / 4)
 						radius = max(3, radius)
 						self.canvas.create_circle(*grid_center, radius, fill=circle_color)
 
