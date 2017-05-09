@@ -120,7 +120,9 @@ class Main(object):
 
 	def getGridSpaceCenter(self, player_num, grid_x, grid_y):
 		_p = MAX_PLAYERS - player_num
-		return grid_x * self.grid_block_width + (self.grid_block_width / 2), grid_y * self.grid_block_height * _p  + (self.grid_block_height / 2)
+		base_x = grid_x * self.grid_block_width
+		base_y = grid_y * self.grid_block_height + _p * (GAME_SIZE / 2)
+		return base_x + (self.grid_block_width / 2), base_y + (self.grid_block_height / 2)
 		# + (player_num - 1 * GRID_SIZE * self.grid_block_height)
 
 
