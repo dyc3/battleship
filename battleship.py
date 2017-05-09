@@ -89,14 +89,16 @@ class Main(object):
 
 	def onMouseMove(self, event):
 		self.current_mouse_over_grid = self.getGridPos(event.x, event.y)
+		print(self.current_mouse_over_grid)
 		self.draw()
 
 	def getGridPos(self, canvas_x, canvas_y):
-		for p in range(1, MAX_PLAYERS + 1, 1):
-			for k in range(0, int(GAME_SIZE / 2 * p), self.grid_block_height):
-				for h in range(0, int(GAME_SIZE / 2), self.grid_block_width):
+		for p in range(MAX_PLAYERS, 0, -1):
+			y_base = int(GAME_SIZE / 2 * (p - 1))
+			for k in range(y_base, y_base + int(GAME_SIZE / 2), self.grid_block_height):
+				for h in range(0, int(GAME_SIZE / 2) + 1, self.grid_block_width):
 					if (h <= canvas_x and canvas_x <= h + self.grid_block_width) and (k <= canvas_y and canvas_y <= k + self.grid_block_height):
-						return p, int(h / self.grid_block_width), int(k / self.grid_block_height) - ((p - 1) * GRID_SIZE)
+						return MAX_PLAYERS - p + 1, int(h / self.grid_block_width), int(k / self.grid_block_height) - ((p - 1) * GRID_SIZE)
 
 	def getGridSpaceContent(self, player_num, grid_x, grid_y):
 		if player_num == 1:
