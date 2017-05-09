@@ -84,7 +84,7 @@ class Main(object):
 						# print(self.grid_player2)
 					circle_color = None
 					if self.current_mouse_over_grid and self.current_mouse_over_grid == grid_pos:
-						circle_color = "green"
+						circle_color = "lime green"
 					elif grid_space_content:
 						if grid_space_content == "hit":
 							circle_color = "red"
