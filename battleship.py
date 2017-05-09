@@ -49,6 +49,17 @@ class Main(object):
 				self.grid_player1[r] += [None]
 				self.grid_player2[r] += [None]
 
+		self.grid_player1[3][5] = "miss"
+		self.grid_player1[3][6] = "miss"
+		self.grid_player1[3][7] = "hit"
+		self.grid_player1[3][8] = "miss"
+		self.grid_player1[4][7] = "hit"
+
+		self.grid_player2[6][1] = "miss"
+		self.grid_player2[6][2] = "hit"
+		self.grid_player2[6][3] = "hit"
+		self.grid_player2[6][4] = "hit"
+		self.grid_player2[6][5] = "miss"
 		print("Game reset")
 
 	def draw(self):
