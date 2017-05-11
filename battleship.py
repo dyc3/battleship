@@ -31,10 +31,13 @@ class Main(object):
 
 		self.canvas = Canvas(self.frame, width=int(GAME_SIZE / 2), height=GAME_SIZE)
 		self.canvas.pack(fill=BOTH, expand=1)
+		self.canvas.config(highlightbackground="yellow", highlightthickness=2)
 
 		self.grid_block_height = 10
 		self.grid_block_width = 10
 		self.current_mouse_over_grid = None # a tuple of grid coordinates that the mouse is currently over.
+
+		self.game_phase = "setup" # valid values: setup, battle
 
 		self.canvas.bind("<Motion>", self.onMouseMove)
 		self.reset()
@@ -60,6 +63,8 @@ class Main(object):
 		self.grid_player2[6][3] = "hit"
 		self.grid_player2[6][4] = "hit"
 		self.grid_player2[6][5] = "miss"
+		self.grid_player2[9][6] = "miss"
+		self.grid_player2[9][7] = "miss"
 		print("Game reset")
 
 	def draw(self):
@@ -96,12 +101,14 @@ class Main(object):
 						radius = max(3, radius)
 						self.canvas.create_circle(*grid_center, radius, fill=circle_color)
 
+		# draw a thicker line in the middle between the player's boards
+		self.canvas.create_line(0, int(GAME_SIZE / 2), int(GAME_SIZE / 2), int(GAME_SIZE / 2), width=3)
 
 
 	def onMouseMove(self, event):
 		if self.current_mouse_over_grid != self.getGridPos(event.x, event.y):
 			self.current_mouse_over_grid = self.getGridPos(event.x, event.y)
-			print(self.current_mouse_over_grid)
+			print("{} => {}".format(self.current_mouse_over_grid, self.getGridSpaceCenter(*self.current_mouse_over_grid)))
 		self.draw()
 
 	def getGridPos(self, canvas_x, canvas_y):
@@ -122,7 +129,7 @@ class Main(object):
 		_p = MAX_PLAYERS - player_num
 		base_x = grid_x * self.grid_block_width
 		base_y = grid_y * self.grid_block_height + _p * (GAME_SIZE / 2)
-		return base_x + (self.grid_block_width / 2), base_y + (self.grid_block_height / 2)
+		return int(base_x + (self.grid_block_width / 2)), int(base_y + (self.grid_block_height / 2))
 		# + (player_num - 1 * GRID_SIZE * self.grid_block_height)
 
 
