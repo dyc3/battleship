@@ -10,6 +10,8 @@ random.seed(4832)
 GAME_SIZE = 500 # height of the game window in pixels, width is half of this
 GRID_SIZE = 10 # how many blocks each player's grid
 MAX_PLAYERS = 2
+SHIP_LENGTHS = [5, 4, 3, 3, 2]
+QUEUE_BLOCK_SIZE = 16
 
 def _create_circle(self, x, y, r, **kwargs):
 	return self.create_oval(x-r, y-r, x+r, y+r, **kwargs)
@@ -32,6 +34,8 @@ class Main(object):
 		self.canvas = Canvas(self.frame, width=int(GAME_SIZE / 2), height=GAME_SIZE)
 		self.canvas.pack(fill=BOTH, expand=1)
 		self.canvas.config(highlightbackground="yellow", highlightthickness=2)
+		self.canvas_placement_queue = Canvas(self.frame, width=int(GAME_SIZE / 2), height=(len(SHIP_LENGTHS) * QUEUE_BLOCK_SIZE))
+		self.canvas_placement_queue.pack(fill=Y)
 
 		self.grid_block_height = 10
 		self.grid_block_width = 10
@@ -45,6 +49,7 @@ class Main(object):
 	def reset(self):
 		self.grid_player1 = []
 		self.grid_player2 = []
+		self.boat_placement_queue = SHIP_LENGTHS
 		for r in range(GRID_SIZE):
 			self.grid_player1 += [[]]
 			self.grid_player2 += [[]]
@@ -105,6 +110,12 @@ class Main(object):
 		# draw a thicker line in the middle between the player's boards
 		self.canvas.create_line(0, int(GAME_SIZE / 2), int(GAME_SIZE / 2), int(GAME_SIZE / 2), width=3)
 
+		if self.game_phase == "setup":
+			# draw boat placement queue
+			radius = int(QUEUE_BLOCK_SIZE / 2) - 2
+			for y, boat_length in zip(range(len(self.boat_placement_queue)), self.boat_placement_queue):
+				for x in range(boat_length):
+					self.canvas_placement_queue.create_circle((x * QUEUE_BLOCK_SIZE) + radius + 2, (y * QUEUE_BLOCK_SIZE) + radius + 2, radius, fill="gray")
 
 	def onMouseMove(self, event):
 		if self.current_mouse_over_grid != self.getGridPos(event.x, event.y):
