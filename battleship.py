@@ -46,7 +46,7 @@ class Main(object):
 		self.selected_ship_index = None # used for boat placement
 
 		self.canvas.bind("<Motion>", self.onMouseMove)
-		self.canvas_placement_queue.bind("<B1-click>", self.onPlacementQueueClick)
+		self.canvas_placement_queue.bind("<Button-1>", self.onPlacementQueueClick)
 		self.reset()
 
 	def reset(self):
@@ -134,7 +134,11 @@ class Main(object):
 		self.draw()
 
 	def onPlacementQueueClick(self, event):
-		pass
+		index = event.y // QUEUE_BLOCK_SIZE
+		if index < len(self.boat_placement_queue):
+			self.selected_ship_index = index
+		else:
+			self.selected_ship_index = None
 
 	def getGridPos(self, canvas_x, canvas_y):
 		for p in range(MAX_PLAYERS, 0, -1):
