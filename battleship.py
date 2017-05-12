@@ -105,7 +105,7 @@ class Main(object):
 							if boat_placement_valid:
 								circle_color = "light gray"
 							else:
-								circle_color = "burgundy"
+								circle_color = "dark red"
 					elif self.game_phase == "battle":
 						if grid_space_content:
 							if grid_space_content == "hit":
