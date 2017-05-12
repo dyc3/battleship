@@ -158,6 +158,11 @@ class Main(object):
 		"""
 		Returns a 2 tuple of an array of grid positions that hold the selected ship, starting from the position of the selector, and a boolean determining the validity of the ship placement.
 		"""
+		if not self.current_mouse_over_grid or not self.selected_ship_index:
+			return None, False
+		if not self.boat_placement_queue or len(self.boat_placement_queue) == 0:
+			return None, False
+
 		c = []
 		positions = []
 		isValid = None
