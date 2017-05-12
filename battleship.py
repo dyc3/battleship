@@ -43,7 +43,7 @@ class Main(object):
 
 		self.game_phase = "setup" # valid values: setup, battle
 		self.boat_rotation = False # True is vertical, False is horizontal
-		self.selected_ship_index = None # used for boat placement
+		self.selected_ship_index = 0 # used for boat placement
 
 		self.canvas.bind("<Motion>", self.onMouseMove)
 		self.reset()
@@ -157,7 +157,7 @@ class Main(object):
 		"""
 		Returns a 2 tuple of an array of grid positions that hold the selected ship, starting from the position of the selector, and a boolean determining the validity of the ship placement.
 		"""
-		if not self.current_mouse_over_grid or not self.selected_ship_index:
+		if not self.current_mouse_over_grid or self.selected_ship_index == None:
 			return None, False
 		if not self.boat_placement_queue or len(self.boat_placement_queue) == 0:
 			return None, False
@@ -176,7 +176,7 @@ class Main(object):
 			positions = zip(range(self.current_mouse_over_grid[1], self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index]), c)
 			isValid = self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index] > GRID_SIZE
 
-		return positions, isValid
+		return list(positions), isValid
 
 
 root = Tk()
