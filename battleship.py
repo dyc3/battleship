@@ -169,7 +169,7 @@ class Main(object):
 		if self.boat_rotation:
 			# vertical, x will be constant
 			c = [self.current_mouse_over_grid[1]] * self.boat_placement_queue[self.selected_ship_index]
-			positions = zip(c, range(self.current_mouse_over_grid[2], self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index]))
+			positions = zip(c, range(self.current_mouse_over_grid[2], self.current_mouse_over_grid[2] + self.boat_placement_queue[self.selected_ship_index]))
 			isValid = self.current_mouse_over_grid[2] + self.boat_placement_queue[self.selected_ship_index] > GRID_SIZE
 		else:
 			# horizontal, y will be constant
