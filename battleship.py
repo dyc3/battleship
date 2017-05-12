@@ -84,6 +84,7 @@ class Main(object):
 		self.grid_block_width = int(self.canvas.winfo_width() / GRID_SIZE)
 		# print("grid block size: {}".format((self.grid_block_width, self.grid_block_height)))
 		boat_placement, boat_placement_valid = self.getSelectedShipPlacement()
+		print((boat_placement, boat_placement_valid))
 		for p in range(MAX_PLAYERS, 0, -1):
 			for y in range(int(GAME_SIZE / 2 * (p - 1)) - 1, int(GAME_SIZE / 2 * p) + 1, self.grid_block_height):
 				# for x in range(int(GAME_SIZE * .25), int(GAME_SIZE * .75), self.grid_block_width):
@@ -176,7 +177,12 @@ class Main(object):
 			positions = zip(range(self.current_mouse_over_grid[1], self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index]), c)
 			isValid = self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index] > GRID_SIZE
 
-		return list(positions), self.current_mouse_over_grid[0] == 1 and isValid
+		positions = list(positions)
+		# prepend the player numbers
+		for i in range(len(positions)):
+			positions[i] = (self.current_mouse_over_grid[0],) + positions[i]
+
+		return positions, self.current_mouse_over_grid[0] == 1 and isValid
 
 
 root = Tk()
