@@ -100,7 +100,7 @@ class Main(object):
 					circle_color = None
 					if self.current_mouse_over_grid and self.current_mouse_over_grid == grid_pos:
 						circle_color = "lime green"
-					if self.game_phase == "setup":
+					elif self.game_phase == "setup":
 						if boat_placement and grid_pos in boat_placement:
 							if boat_placement_valid:
 								circle_color = "light gray"
