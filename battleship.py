@@ -77,7 +77,7 @@ class Main(object):
 		self.grid_block_width = int(self.canvas.winfo_width() / GRID_SIZE)
 		# print("grid block size: {}".format((self.grid_block_width, self.grid_block_height)))
 		for p in range(MAX_PLAYERS, 0, -1):
-			for y in range(int(GAME_SIZE / 2 * (p - 1)), int(GAME_SIZE / 2 * p) + 1, self.grid_block_height):
+			for y in range(int(GAME_SIZE / 2 * (p - 1)) - 1, int(GAME_SIZE / 2 * p) + 1, self.grid_block_height):
 				# for x in range(int(GAME_SIZE * .25), int(GAME_SIZE * .75), self.grid_block_width):
 				for x in range(0, int(GAME_SIZE / 2) + 1, self.grid_block_width):
 					# print("placing grid block {}".format((x, y, x + self.grid_block_width, y + self.grid_block_height)))
@@ -137,6 +137,7 @@ class Main(object):
 
 root = Tk()
 arial14 = font.Font(family="Arial", size=14)
+ubuntuMono10 = font.Font(family="Ubuntu Mono", size=10)
 app = Main(root)
 root.deiconify()
 # app.draw()
