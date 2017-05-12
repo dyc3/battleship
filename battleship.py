@@ -128,6 +128,12 @@ class Main(object):
 				for x in range(boat_length):
 					self.canvas_placement_queue.create_circle((x * QUEUE_BLOCK_SIZE) + radius + 2, (y * QUEUE_BLOCK_SIZE) + radius + 2, radius, fill="gray")
 
+			# indicate which boat is selected
+			if self.selected_ship_index != None:
+				selection_width = QUEUE_BLOCK_SIZE * self.boat_placement_queue[self.selected_ship_index]
+				basey = QUEUE_BLOCK_SIZE * self.selected_ship_index
+				self.canvas_placement_queue.create_rectangle(0, basey, selection_width, QUEUE_BLOCK_SIZE, outline="red")
+
 	def onMouseMove(self, event):
 		if self.current_mouse_over_grid != self.getGridPos(event.x, event.y):
 			self.current_mouse_over_grid = self.getGridPos(event.x, event.y)
