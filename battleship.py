@@ -43,7 +43,7 @@ class Main(object):
 
 		self.game_phase = "setup" # valid values: setup, battle
 		self.boat_rotation = False # True is vertical, False is horizontal
-		self.selected_ship_index = 0 # used for boat placement
+		self.selected_ship_index = None # used for boat placement
 
 		self.canvas.bind("<Motion>", self.onMouseMove)
 		self.reset()
@@ -84,7 +84,6 @@ class Main(object):
 		self.grid_block_width = int(self.canvas.winfo_width() / GRID_SIZE)
 		# print("grid block size: {}".format((self.grid_block_width, self.grid_block_height)))
 		boat_placement, boat_placement_valid = self.getSelectedShipPlacement()
-		print((boat_placement, boat_placement_valid))
 		for p in range(MAX_PLAYERS, 0, -1):
 			for y in range(int(GAME_SIZE / 2 * (p - 1)) - 1, int(GAME_SIZE / 2 * p) + 1, self.grid_block_height):
 				# for x in range(int(GAME_SIZE * .25), int(GAME_SIZE * .75), self.grid_block_width):
