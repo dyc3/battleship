@@ -170,12 +170,12 @@ class Main(object):
 			# vertical, x will be constant
 			c = [self.current_mouse_over_grid[1]] * self.boat_placement_queue[self.selected_ship_index]
 			positions = zip(c, range(self.current_mouse_over_grid[2], self.current_mouse_over_grid[2] + self.boat_placement_queue[self.selected_ship_index]))
-			isValid = self.current_mouse_over_grid[2] + self.boat_placement_queue[self.selected_ship_index] > GRID_SIZE
+			isValid = self.current_mouse_over_grid[2] + self.boat_placement_queue[self.selected_ship_index] <= GRID_SIZE
 		else:
 			# horizontal, y will be constant
 			c = [self.current_mouse_over_grid[2]] * self.boat_placement_queue[self.selected_ship_index]
 			positions = zip(range(self.current_mouse_over_grid[1], self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index]), c)
-			isValid = self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index] > GRID_SIZE
+			isValid = self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index] <= GRID_SIZE
 
 		positions = list(positions)
 		# prepend the player numbers
