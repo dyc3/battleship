@@ -176,7 +176,7 @@ class Main(object):
 			positions = zip(range(self.current_mouse_over_grid[1], self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index]), c)
 			isValid = self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index] > GRID_SIZE
 
-		return list(positions), isValid
+		return list(positions), self.current_mouse_over_grid[0] == 1 and isValid
 
 
 root = Tk()
