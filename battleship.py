@@ -42,6 +42,8 @@ class Main(object):
 		self.current_mouse_over_grid = None # a tuple of grid coordinates that the mouse is currently over.
 
 		self.game_phase = "setup" # valid values: setup, battle
+		self.boat_rotation = 0 # 0 is right, 1 is down
+		self.selected_ship_index = None # used for boat placement
 
 		self.canvas.bind("<Motion>", self.onMouseMove)
 		self.reset()
@@ -142,6 +144,31 @@ class Main(object):
 		base_y = grid_y * self.grid_block_height + _p * (GAME_SIZE / 2)
 		return int(base_x + (self.grid_block_width / 2)), int(base_y + (self.grid_block_height / 2))
 		# + (player_num - 1 * GRID_SIZE * self.grid_block_height)
+
+	def getSelectedShipPlacement(self):
+		"""
+		Returns a 2 tuple of an array of grid positions that hold the selected ship, starting from the position of the selector, and a boolean determining the validity of the ship placement.
+		"""
+		assert self.boat_rotation == 0 or self.boat_rotation == 1, "invalid boat rotation: {}".format(self.boat_rotation)
+
+		c = []
+		if self.boat_rotation == 0:
+			# horizontal, y will be constant
+			c = [self.current_mouse_over_grid[2]] * self.boat_placement_queue[self.selected_ship_index]
+		elif self.boat_rotation == 1:
+			# vertical, x will be constant
+			c = [self.current_mouse_over_grid[1]] * self.boat_placement_queue[self.selected_ship_index]
+
+		positions = []
+		isValid = None
+		if self.boat_rotation == 0:
+			positions = zip(range(self.current_mouse_over_grid[1], self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index]), c)
+			isValid = self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index] > GRID_SIZE
+		elif self.boat_rotation == 1:
+			positions = zip(c, range(self.current_mouse_over_grid[2], self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index]))
+			isValid = self.current_mouse_over_grid[2] + self.boat_placement_queue[self.selected_ship_index] > GRID_SIZE
+
+		return positions, isValid
 
 
 root = Tk()
