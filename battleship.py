@@ -83,6 +83,8 @@ class Main(object):
 		self.grid_block_height = int(self.canvas.winfo_height() / 2 / GRID_SIZE)
 		self.grid_block_width = int(self.canvas.winfo_width() / GRID_SIZE)
 		# print("grid block size: {}".format((self.grid_block_width, self.grid_block_height)))
+		boat_placement, boat_placement_valid = self.getSelectedShipPlacement()
+		print(boat_placement)
 		for p in range(MAX_PLAYERS, 0, -1):
 			for y in range(int(GAME_SIZE / 2 * (p - 1)) - 1, int(GAME_SIZE / 2 * p) + 1, self.grid_block_height):
 				# for x in range(int(GAME_SIZE * .25), int(GAME_SIZE * .75), self.grid_block_width):
@@ -98,11 +100,18 @@ class Main(object):
 					circle_color = None
 					if self.current_mouse_over_grid and self.current_mouse_over_grid == grid_pos:
 						circle_color = "lime green"
-					elif grid_space_content:
-						if grid_space_content == "hit":
-							circle_color = "red"
-						elif grid_space_content == "miss":
-							circle_color = "white"
+					if self.game_phase == "setup":
+						if boat_placement and grid_pos in boat_placement:
+							if boat_placement_valid:
+								circle_color = "light gray"
+							else:
+								circle_color = "burgundy"
+					elif self.game_phase == "battle":
+						if grid_space_content:
+							if grid_space_content == "hit":
+								circle_color = "red"
+							elif grid_space_content == "miss":
+								circle_color = "white"
 					if circle_color:
 						grid_center = self.getGridSpaceCenter(*grid_pos)
 						radius = int(min(self.grid_block_width, self.grid_block_height) / 4)
