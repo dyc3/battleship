@@ -87,8 +87,7 @@ class Main(object):
 					try:
 						grid_space_content = self.getGridSpaceContent(*grid_pos)
 					except Exception as e:
-						print("cant get content at: {}".format(grid_pos))
-						# print(self.grid_player2)
+						continue
 					circle_color = None
 					if self.current_mouse_over_grid and self.current_mouse_over_grid == grid_pos:
 						circle_color = "lime green"
@@ -110,7 +109,6 @@ class Main(object):
 	def onMouseMove(self, event):
 		if self.current_mouse_over_grid != self.getGridPos(event.x, event.y):
 			self.current_mouse_over_grid = self.getGridPos(event.x, event.y)
-			print("{} => {}".format(self.current_mouse_over_grid, self.getGridSpaceCenter(*self.current_mouse_over_grid)))
 		self.draw()
 
 	def getGridPos(self, canvas_x, canvas_y):
