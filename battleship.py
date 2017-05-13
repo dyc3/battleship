@@ -177,6 +177,12 @@ class Main(object):
 					if (h <= canvas_x and canvas_x <= h + self.grid_block_width) and (k <= canvas_y and canvas_y <= k + self.grid_block_height):
 						return MAX_PLAYERS - p + 1, int(h / self.grid_block_width), int(k / self.grid_block_height) - ((p - 1) * GRID_SIZE)
 
+	def setGridSpaceContent(self, player_num, grid_x, grid_y, content):
+		if player_num == 1:
+			self.grid_player1[grid_y][grid_x] = content
+		elif player_num == 2:
+			self.grid_player2[grid_y][grid_x] = content
+
 	def getGridSpaceContent(self, player_num, grid_x, grid_y):
 		if player_num == 1:
 			return self.grid_player1[grid_y][grid_x]
