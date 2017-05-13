@@ -46,6 +46,7 @@ class Main(object):
 		self.selected_ship_index = None # used for boat placement
 
 		self.canvas.bind("<Motion>", self.onMouseMove)
+		self.canvas.bind("<Button-1>", self.onGridClick)
 		self.canvas.bind("<Button-3>", self.onGridRightClick)
 		self.canvas_placement_queue.bind("<Motion>", self.onPlacementQueueMouseMove)
 		self.canvas_placement_queue.bind("<Button-1>", self.onPlacementQueueClick)
@@ -154,6 +155,14 @@ class Main(object):
 			self.selected_ship_index = None
 
 		self.draw_placement_queue()
+
+	def onGridClick(self, event):
+		# place boat
+		boat_placement, isValid = self.getSelectedShipPlacement()
+		if isValid:
+			for pos in boat_placement:
+				pass
+		self.draw()
 
 	def onGridRightClick(self, event):
 		# rotate boat placement
