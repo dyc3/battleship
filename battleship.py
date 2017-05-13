@@ -58,7 +58,7 @@ class Main(object):
 
 		self.grid_player1 = []
 		self.grid_player2 = []
-		self.boat_placement_queue = SHIP_LENGTHS
+		self.boat_placement_queue = SHIP_LENGTHS.copy()
 		for r in range(GRID_SIZE):
 			self.grid_player1 += [[]]
 			self.grid_player2 += [[]]
