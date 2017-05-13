@@ -46,6 +46,7 @@ class Main(object):
 		self.selected_ship_index = None # used for boat placement
 
 		self.canvas.bind("<Motion>", self.onMouseMove)
+		self.canvas_placement_queue.bind("<Motion>", self.onPlacementQueueMouseMove)
 		self.canvas_placement_queue.bind("<Button-1>", self.onPlacementQueueClick)
 		self.reset()
 
@@ -121,6 +122,8 @@ class Main(object):
 		# draw a thicker line in the middle between the player's boards
 		self.canvas.create_line(0, int(GAME_SIZE / 2), int(GAME_SIZE / 2), int(GAME_SIZE / 2), width=3)
 
+	def draw_placement_queue(self):
+		self.canvas_placement_queue.delete(ALL)
 		if self.game_phase == "setup":
 			# draw boat placement queue
 			radius = int(QUEUE_BLOCK_SIZE / 2) - 2
@@ -132,12 +135,15 @@ class Main(object):
 			if self.selected_ship_index != None:
 				selection_width = QUEUE_BLOCK_SIZE * self.boat_placement_queue[self.selected_ship_index]
 				basey = QUEUE_BLOCK_SIZE * self.selected_ship_index
-				self.canvas_placement_queue.create_rectangle(0, basey, selection_width, QUEUE_BLOCK_SIZE, outline="red")
+				self.canvas_placement_queue.create_rectangle(0, basey, selection_width, basey + QUEUE_BLOCK_SIZE, outline="red")
 
 	def onMouseMove(self, event):
 		if self.current_mouse_over_grid != self.getGridPos(event.x, event.y):
 			self.current_mouse_over_grid = self.getGridPos(event.x, event.y)
 		self.draw()
+
+	def onPlacementQueueMouseMove(self, event):
+		self.draw_placement_queue()
 
 	def onPlacementQueueClick(self, event):
 		index = event.y // QUEUE_BLOCK_SIZE
@@ -145,6 +151,8 @@ class Main(object):
 			self.selected_ship_index = index
 		else:
 			self.selected_ship_index = None
+
+		self.draw_placement_queue()
 
 	def getGridPos(self, canvas_x, canvas_y):
 		for p in range(MAX_PLAYERS, 0, -1):
