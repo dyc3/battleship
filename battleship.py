@@ -53,6 +53,8 @@ class Main(object):
 		self.reset()
 
 	def reset(self):
+		self.canvas_placement_queue.pack(fill=Y)
+
 		self.grid_player1 = []
 		self.grid_player2 = []
 		self.boat_placement_queue = SHIP_LENGTHS
@@ -101,6 +103,9 @@ class Main(object):
 					except Exception as e:
 						continue
 					circle_color = None
+					if grid_space_content:
+						if grid_space_content == "boat":
+							circle_color = "dark gray"
 					if self.current_mouse_over_grid and self.current_mouse_over_grid == grid_pos:
 						circle_color = "lime green"
 					elif self.game_phase == "setup":
@@ -157,16 +162,25 @@ class Main(object):
 		self.draw_placement_queue()
 
 	def onGridClick(self, event):
-		# place boat
-		boat_placement, isValid = self.getSelectedShipPlacement()
-		if isValid:
-			for pos in boat_placement:
-				pass
+		if self.game_phase == "setup":
+			# place boat
+			boat_placement, isValid = self.getSelectedShipPlacement()
+			if isValid:
+				for pos in boat_placement:
+					self.setGridSpaceContent(*pos, "boat")
+				del self.boat_placement_queue[self.selected_ship_index]
+				if self.selected_ship_index >= len(self.boat_placement_queue):
+					self.selected_ship_index -= 1
+				if len(self.boat_placement_queue) == 0:
+					self.selected_ship_index = None
+					self.canvas_placement_queue.pack_forget()
+				self.draw_placement_queue()
 		self.draw()
 
 	def onGridRightClick(self, event):
-		# rotate boat placement
-		self.boat_rotation = not self.boat_rotation
+		if self.game_phase == "setup":
+			# rotate boat placement
+			self.boat_rotation = not self.boat_rotation
 		self.draw()
 
 	def getGridPos(self, canvas_x, canvas_y):
