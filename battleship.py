@@ -182,6 +182,7 @@ class Main(object):
 			attack_pos = self.getGridPos(event.x, event.y)
 			if attack_pos[0] == 2:
 				self.takeTurn(*attack_pos)
+				self.aiThinkTurn()
 		self.draw()
 
 	def onGridRightClick(self, event):
@@ -269,6 +270,8 @@ class Main(object):
 		self.setGridSpaceContent(player_num, grid_x, grid_y, content)
 		print("Player {} {} Player {} at {}{}".format(attacking_player, content, player_num, GRID_LETTERS[grid_y], grid_x))
 
+	def aiThinkTurn(self):
+		pass
 root = Tk()
 arial14 = font.Font(family="Arial", size=14)
 ubuntuMono10 = font.Font(family="Ubuntu Mono", size=10)
