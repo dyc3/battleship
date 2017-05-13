@@ -9,6 +9,7 @@ import random
 random.seed(4832)
 GAME_SIZE = 500 # height of the game window in pixels, width is half of this
 GRID_SIZE = 10 # how many blocks each player's grid
+GRID_LETTERS = [char for char in "ABCDEFGHIJ"] # y axis is labeled with letters
 MAX_PLAYERS = 2
 SHIP_LENGTHS = [5, 4, 3, 3, 2]
 QUEUE_BLOCK_SIZE = 16
@@ -174,7 +175,13 @@ class Main(object):
 				if len(self.boat_placement_queue) == 0:
 					self.selected_ship_index = None
 					self.canvas_placement_queue.pack_forget()
+					self.game_phase = "battle"
+					print("Setup phase complete")
 				self.draw_placement_queue()
+		elif self.game_phase == "battle":
+			attack_pos = self.getGridPos(event.x, event.y)
+			if attack_pos[0] == 2:
+				self.takeTurn(*attack_pos)
 		self.draw()
 
 	def onGridRightClick(self, event):
@@ -245,6 +252,22 @@ class Main(object):
 
 		return positions, self.current_mouse_over_grid[0] == 1 and isValid
 
+	def takeTurn(self, player_num, grid_x, grid_y):
+		if not self.getGridSpaceContent(player_num, grid_x, grid_y) == None and not self.getGridSpaceContent(player_num, grid_x, grid_y) == "boat":
+			return
+
+		attacking_player = None
+		if player_num == 1:
+			attacking_player = 2
+		elif player_num == 2:
+			attacking_player = 1
+		content = None
+		if self.getGridSpaceContent(player_num, grid_x, grid_y) == "boat":
+			content = "hit"
+		else:
+			content = "miss"
+		self.setGridSpaceContent(player_num, grid_x, grid_y, content)
+		print("Player {} {} Player {} at {}{}".format(attacking_player, content, player_num, GRID_LETTERS[grid_y], grid_x))
 
 root = Tk()
 arial14 = font.Font(family="Arial", size=14)
