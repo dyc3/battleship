@@ -280,7 +280,13 @@ class Main(object):
 		print("Player {} {} Player {} at {}{}".format(attacking_player, content, player_num, GRID_LETTERS[grid_y], grid_x))
 
 	def aiThinkTurn(self):
-		pass
+		# attack in a grid pattern to search for ships
+		for y in range(len(self.grid_player1)):
+			for x in range(len(self.grid_player1[y])):
+				if y % 2 == x % 2 and self.getGridSpaceContent(1, x, y) not in ["hit", "miss"]:
+					self.takeTurn(1, x, y)
+					return
+
 root = Tk()
 arial14 = font.Font(family="Arial", size=14)
 ubuntuMono10 = font.Font(family="Ubuntu Mono", size=10)
