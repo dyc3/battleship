@@ -280,6 +280,32 @@ class Main(object):
 		print("Player {} {} Player {} at {}{}".format(attacking_player, content, player_num, GRID_LETTERS[grid_y], grid_x))
 
 	def aiThinkTurn(self):
+		def _getAdjacent(grid_x, grid_y):
+			adjacent = [
+				(1, grid_x - 1, grid_y),
+				(1, grid_x, grid_y - 1),
+				(1, grid_x + 1, grid_y),
+				(1, grid_x, grid_y + 1),
+			]
+			to_remove = []
+			for i in range(len(adjacent)):
+				if adjacent[i][1] < 0 or adjacent[i][1] >= GRID_SIZE or adjacent[i][2] < 0 or adjacent[i][2] >= GRID_SIZE:
+					to_remove += [i]
+			to_remove = sorted(to_remove, reverse=True)
+			for index in to_remove:
+				del adjacent[index]
+			return adjacent
+
+		# look for hits, then attack any places around them if available
+		for y in range(len(self.grid_player1)):
+			for x in range(len(self.grid_player1[y])):
+				if self.getGridSpaceContent(1, x, y) == "hit":
+					adjacent = _getAdjacent(x, y)
+					for pos in adjacent:
+						if self.getGridSpaceContent(*pos) not in ["hit", "miss"]:
+							self.takeTurn(*pos)
+							return
+
 		# attack in a grid pattern to search for ships
 		for y in range(len(self.grid_player1)):
 			for x in range(len(self.grid_player1[y])):
