@@ -227,6 +227,38 @@ class Main(object):
 		return int(base_x + (self.grid_block_width / 2)), int(base_y + (self.grid_block_height / 2))
 		# + (player_num - 1 * GRID_SIZE * self.grid_block_height)
 
+	def getShipPlacement(self, player_num, start_pos, ship_length, vertical):
+		"""
+		player_num is the player number who is placing the ship.
+
+		Returns a 2 tuple of an array of grid positions that hold the specified ship, starting from the specified position `start_pos`, and a boolean determining the validity of the ship placement.
+		"""
+		c = []
+		positions = []
+		isValid = None
+		if vertical:
+			# vertical, x will be constant
+			c = [start_pos[1]] * ship_length
+			positions = zip(c, range(start_pos[2], start_pos[2] + ship_length))
+			isValid = start_pos[2] + ship_length <= GRID_SIZE
+		else:
+			# horizontal, y will be constant
+			c = [start_pos[2]] * ship_length
+			positions = zip(range(start_pos[1], start_pos[1] + ship_length), c)
+			isValid = start_pos[1] + ship_length <= GRID_SIZE
+
+		positions = list(positions)
+		# prepend the player numbers
+		for i in range(len(positions)):
+			positions[i] = (start_pos[0],) + positions[i]
+
+		if isValid:
+			for pos in positions:
+				if self.getGridSpaceContent(*pos) != None:
+					isValid = False
+
+		return positions, start_pos[0] == player_num and isValid
+
 	def getSelectedShipPlacement(self):
 		"""
 		Returns a 2 tuple of an array of grid positions that hold the selected ship, starting from the position of the selector, and a boolean determining the validity of the ship placement.
@@ -236,31 +268,7 @@ class Main(object):
 		if not self.boat_placement_queue or len(self.boat_placement_queue) == 0:
 			return None, False
 
-		c = []
-		positions = []
-		isValid = None
-		if self.boat_rotation:
-			# vertical, x will be constant
-			c = [self.current_mouse_over_grid[1]] * self.boat_placement_queue[self.selected_ship_index]
-			positions = zip(c, range(self.current_mouse_over_grid[2], self.current_mouse_over_grid[2] + self.boat_placement_queue[self.selected_ship_index]))
-			isValid = self.current_mouse_over_grid[2] + self.boat_placement_queue[self.selected_ship_index] <= GRID_SIZE
-		else:
-			# horizontal, y will be constant
-			c = [self.current_mouse_over_grid[2]] * self.boat_placement_queue[self.selected_ship_index]
-			positions = zip(range(self.current_mouse_over_grid[1], self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index]), c)
-			isValid = self.current_mouse_over_grid[1] + self.boat_placement_queue[self.selected_ship_index] <= GRID_SIZE
-
-		positions = list(positions)
-		# prepend the player numbers
-		for i in range(len(positions)):
-			positions[i] = (self.current_mouse_over_grid[0],) + positions[i]
-
-		if isValid:
-			for pos in positions:
-				if self.getGridSpaceContent(*pos) != None:
-					isValid = False
-
-		return positions, self.current_mouse_over_grid[0] == 1 and isValid
+		return self.getShipPlacement(1, self.current_mouse_over_grid, self.boat_placement_queue[self.selected_ship_index], self.boat_rotation)
 
 	def takeTurn(self, player_num, grid_x, grid_y):
 		if not self.getGridSpaceContent(player_num, grid_x, grid_y) == None and not self.getGridSpaceContent(player_num, grid_x, grid_y) == "boat":
