@@ -185,6 +185,7 @@ class Main(object):
 					self.selected_ship_index = None
 					self.canvas_placement_queue.pack_forget()
 					self.game_phase = "battle"
+					self.aiThinkSetup()
 					print("Setup phase complete")
 				self.draw_placement_queue()
 		elif self.game_phase == "battle":
@@ -286,6 +287,27 @@ class Main(object):
 			content = "miss"
 		self.setGridSpaceContent(player_num, grid_x, grid_y, content)
 		print("Player {} {} Player {} at {}{}".format(attacking_player, content, player_num, GRID_LETTERS[grid_y], grid_x))
+
+	def aiThinkSetup(self):
+		# place ships in random spots where they fit
+		print("setting up ai ships...")
+		for ship in SHIP_LENGTHS:
+			while True:
+				vertical = bool(random.getrandbits(1))
+				x, y = None, None
+				if vertical:
+					x = random.randint(0, GRID_SIZE)
+					y = random.randint(0, GRID_SIZE - ship)
+				else:
+					x = random.randint(0, GRID_SIZE - ship)
+					y = random.randint(0, GRID_SIZE)
+				if self.getGridSpaceContent(*(2, x, y)) == "boat":
+					continue
+				boat_placement, isValid = self.getShipPlacement(2, (2, x, y), ship, vertical)
+				if isValid:
+					for pos in boat_placement:
+						self.setGridSpaceContent(*pos, "boat")
+					break
 
 	def aiThinkTurn(self):
 		def _getAdjacent(grid_x, grid_y):
