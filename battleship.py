@@ -238,6 +238,11 @@ class Main(object):
 		for i in range(len(positions)):
 			positions[i] = (self.current_mouse_over_grid[0],) + positions[i]
 
+		if isValid:
+			for pos in positions:
+				if self.getGridSpaceContent(*pos) != None:
+					isValid = False
+
 		return positions, self.current_mouse_over_grid[0] == 1 and isValid
 
 
