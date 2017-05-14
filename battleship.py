@@ -43,7 +43,7 @@ class Main(object):
 		self.grid_block_width = 10
 		self.current_mouse_over_grid = None # a tuple of grid coordinates that the mouse is currently over.
 
-		self.game_phase = "setup" # valid values: setup, battle
+		self.game_phase = "setup" # valid values: setup, battle, end
 		self.boat_rotation = False # True is vertical, False is horizontal
 		self.selected_ship_index = None # used for boat placement
 
@@ -200,6 +200,10 @@ class Main(object):
 			if attack_pos[0] == 2:
 				self.takeTurn(*attack_pos)
 				self.aiThinkTurn()
+			winner = self.getWinner()
+			if winner:
+				self.onWinner(winner)
+
 		self.draw()
 
 	def onGridRightClick(self, event):
@@ -207,6 +211,9 @@ class Main(object):
 			# rotate boat placement
 			self.boat_rotation = not self.boat_rotation
 		self.draw()
+
+	def onWinner(self, winner):
+		self.game_phase = "end"
 
 	def getGridPos(self, canvas_x, canvas_y):
 		for p in range(MAX_PLAYERS, 0, -1):
@@ -352,7 +359,7 @@ class Main(object):
 
 	def getWinner(self):
 		"""
-		Returns the player number of the winner, if there is one 
+		Returns the player number of the winner, if there is one
 		"""
 		def areAllShipsSunk(grid):
 			areShipsSunk = True
