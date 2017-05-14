@@ -350,6 +350,24 @@ class Main(object):
 					self.takeTurn(1, x, y)
 					return
 
+	def getWinner(self):
+		"""
+		Returns the player number of the winner, if there is one 
+		"""
+		def areAllShipsSunk(grid):
+			areShipsSunk = True
+			for row in range(grid):
+				if "boat" in row:
+					areShipsSunk = False
+			return areShipsSunk
+
+		if areAllShipsSunk(self.grid_player1):
+			return 2
+		elif areAllShipsSunk(self.grid_player2):
+			return 1
+		else:
+			return None
+
 root = Tk()
 arial14 = font.Font(family="Arial", size=14)
 ubuntuMono10 = font.Font(family="Ubuntu Mono", size=10)
