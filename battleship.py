@@ -6,7 +6,8 @@ from tkinter import *
 from tkinter import font
 import random
 
-random.seed(4832)
+sysrand = random.SystemRandom()
+seed = None
 GAME_SIZE = 500 # height of the game window in pixels, width is half of this
 GRID_SIZE = 10 # how many blocks each player's grid
 GRID_LETTERS = [char for char in "ABCDEFGHIJ"] # y axis is labeled with letters
@@ -54,6 +55,12 @@ class Main(object):
 		self.reset()
 
 	def reset(self):
+		# give the random number generator a random seed
+		global seed
+		seed = sysrand.randint(27, 23984721039)
+		print("game seed: {}".format(seed))
+		random.seed(seed)
+
 		self.canvas_placement_queue.pack(fill=Y)
 
 		self.grid_player1 = []
