@@ -310,11 +310,11 @@ class Main(object):
 				vertical = bool(random.getrandbits(1))
 				x, y = None, None
 				if vertical:
-					x = random.randint(0, GRID_SIZE)
-					y = random.randint(0, GRID_SIZE - ship)
+					x = random.randrange(0, GRID_SIZE)
+					y = random.randrange(0, GRID_SIZE - ship)
 				else:
-					x = random.randint(0, GRID_SIZE - ship)
-					y = random.randint(0, GRID_SIZE)
+					x = random.randrange(0, GRID_SIZE - ship)
+					y = random.randrange(0, GRID_SIZE)
 				if self.getGridSpaceContent(*(2, x, y)) == "boat":
 					continue
 				boat_placement, isValid = self.getShipPlacement(2, (2, x, y), ship, vertical)
