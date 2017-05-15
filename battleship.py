@@ -363,7 +363,7 @@ class Main(object):
 		"""
 		def areAllShipsSunk(grid):
 			areShipsSunk = True
-			for row in range(grid):
+			for row in grid:
 				if "boat" in row:
 					areShipsSunk = False
 			return areShipsSunk
